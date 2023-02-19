@@ -36,14 +36,13 @@ public class DataBaseConnector {
         }
     }
 
-    public void closeConnection(Connection connect) throws SQLException {
+    public void closeConnection(Connection connect){
         try {
             connect.commit();
             connect.close();
             log.info("Connection closed");
         }catch(Exception e){
             log.error(e.getMessage());
-            throw e;
         }
     }
 }

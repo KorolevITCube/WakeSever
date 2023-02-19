@@ -12,13 +12,13 @@ insert into users(login,password,email) values
 
 CREATE TABLE MONTH_TRACE
 (
-  "ID" serial NOT NULL,
-  "YYYY" character varying(4),
-  "MM" character varying(2),
-  "MASK" character varying(31) NOT NULL DEFAULT 0,
-  "MAXDAYS" smallint DEFAULT 31,
-  "STARTWD" smallint DEFAULT 1,
-  CONSTRAINT "MONTH_TRACE_pkey" PRIMARY KEY ("ID")
+  id serial NOT NULL,
+  yyyy character varying(4),
+  mm character varying(2),
+  mask character varying(31) NOT NULL DEFAULT 0,
+  maxdays smallint DEFAULT 31,
+  startwd smallint DEFAULT 1,
+  CONSTRAINT "MONTH_TRACE_pkey" PRIMARY KEY (id)
 )
 WITH (
   OIDS=FALSE

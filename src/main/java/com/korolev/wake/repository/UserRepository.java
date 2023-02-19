@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 @Service("userDAO")
 @Slf4j
-public class UserRepository implements IRepository<User,Integer>{
+public class UserRepository implements IRepositoryUser<User,Integer>{
 
     private final String findAllQuery = "select * from users";
     private final String selectWhereLogin = "select * from users where login = ?";
@@ -24,8 +24,9 @@ public class UserRepository implements IRepository<User,Integer>{
     @Override
     public ArrayList<User> findAll() {
         ArrayList<User> users = new ArrayList<>();
+        Connection connect = null;
         try {
-            Connection connect = connector.getConnection();
+            connect = connector.getConnection();
             PreparedStatement prepStatement = connect.prepareStatement(findAllQuery);
             ResultSet result = prepStatement.executeQuery();
             while(result.next()){
@@ -37,6 +38,8 @@ public class UserRepository implements IRepository<User,Integer>{
             }
         }catch(Exception e){
             log.error(e.getMessage());
+        }finally{
+            connector.closeConnection(connect);
         }
         return users;
     }
@@ -46,10 +49,12 @@ public class UserRepository implements IRepository<User,Integer>{
         return null;
     }
 
+    @Override
     public User getByLogin(String login) {
         User user = null;
+        Connection connect = null;
         try {
-            Connection connect = connector.getConnection();
+            connect = connector.getConnection();
             PreparedStatement prepStatement = connect.prepareStatement(selectWhereLogin);
             prepStatement.setString(1,login);
             ResultSet result = prepStatement.executeQuery();
@@ -61,6 +66,8 @@ public class UserRepository implements IRepository<User,Integer>{
             }
         } catch (Exception e) {
             log.error(e.getMessage());
+        }finally{
+            connector.closeConnection(connect);
         }
         return user;
     }
@@ -71,8 +78,8 @@ public class UserRepository implements IRepository<User,Integer>{
     }
 
     @Override
-    public void save(User user) {
-
+    public Integer save(User user) {
+        return null;
     }
 
     @Override

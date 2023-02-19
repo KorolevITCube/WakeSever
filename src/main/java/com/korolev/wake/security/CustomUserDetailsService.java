@@ -1,5 +1,6 @@
 package com.korolev.wake.security;
 
+import com.korolev.wake.repository.IRepositoryUser;
 import com.korolev.wake.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    UserRepository usersRepository;
+    IRepositoryUser usersRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

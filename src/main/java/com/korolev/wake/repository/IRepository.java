@@ -7,6 +7,6 @@ public interface IRepository<T,PK extends Serializable> {
     ArrayList<T> findAll();
     T getById(PK id);
     void delete(T t);
-    void save(T t);
+    PK save(T t);
     void update(T t);
 }
