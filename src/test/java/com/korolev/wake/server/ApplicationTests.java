@@ -1,4 +1,4 @@
-package com.korolev.wake.wake.server;
+package com.korolev.wake.server;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

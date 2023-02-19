@@ -1,4 +1,4 @@
-package com.korolev.wake.wake.server;
+package com.korolev.wake;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
