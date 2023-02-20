@@ -1,0 +1,66 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:13.3
+    container_name: postgres
+    environment:
+      POSTGRES_DB: "WakeRus"
+      POSTGRES_USER: "Wake"
+      POSTGRES_PASSWORD: "admin"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ./init-database:/docker-entrypoint-initdb.d
+      - ./postgresql-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U Wake -d WakeRus"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - network
+
+  pgadmin:
+    container_name: pgadmin-container
+    image: dpage/pgadmin4:6.13
+    user: "$UID:$GID"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "korolev@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "korolev"
+      PGADMIN_CONFIG_SERVER_MODE: "True"
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1G
+    networks:
+      - network
+
+  app:
+    image: 'docker-spring-boot-postgres:latest'
+    build:
+      context: .
+    container_name: wake-server
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/WakeRus
+      - SPRING_DATASOURCE_USERNAME=Wake
+      - SPRING_DATASOURCE_PASSWORD=admin
+    networks:
+      - network
+
+networks:
+  network:
+    name: nginx-proxy-network
+    external: true
